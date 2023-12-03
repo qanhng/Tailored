@@ -1,4 +1,4 @@
-create database if not exist tailored;
+create database if not EXISTS tailored;
 
 grant all privileges on tailored.* to 'root'@'%';
 flush privileges;
@@ -8,7 +8,7 @@ USE tailored;
 CREATE TABLE IF NOT EXISTS Shipping_Option (
     ShippingOptionID int AUTO_INCREMENT PRIMARY KEY,
     Cost decimal(4, 2) NOT NULL,
-    Duration varchar(30) NOT NULL
+    Duration varchar(100) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Shopping_Cart(
@@ -203,6 +203,7 @@ insert into Shipping_Option (ShippingOptionID, Cost, Duration) values (2, 9.99, 
 insert into Shipping_Option (ShippingOptionID, Cost, Duration) values (3, 14.99, 'Overnight Shipping');
 insert into Shipping_Option (ShippingOptionID, Cost, Duration) values (4, 8.99, 'Standard International Shipping - 7 business days');
 insert into Shipping_Option (ShippingOptionID, Cost, Duration) values (5, 20.99, 'Expedited International Shipping - 3 business days');
+insert into Shipping_Option (ShippingOptionID, Cost, Duration) values (6, 3.99, 'Expedited Shipping Selected Areas');
 insert into Shipping_Option (ShippingOptionID, Cost, Duration) values (7, 2.99, 'Standard Shipping Selected Areas');
 
 /* Insert Shopping Carts */
