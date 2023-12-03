@@ -155,3 +155,218 @@ def get_all_categories():
         json_data.append(dict(zip(column_headers, row)))
     
     return jsonify(json_data)
+
+    ### Get all discount for all products 
+@products.route('/Discounts{Amount}', methods = ['GET'])
+def get_all_categories():
+    query = '''
+        SELECT Amount 
+        FROM Discount JOIN Clothing_Item ON Discount.DiscountID = Clothing_Item.DiscountID
+        WHERE Clothing_Item.DiscountID IS NOT NULL
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+
+    json_data = []
+    # fetch all the column headers and then all the data from the cursor
+    column_headers = [x[0] for x in cursor.description]
+    theData = cursor.fetchall()
+    # zip headers and data together into dictionary and then append to json data dict.
+    for row in theData:
+        json_data.append(dict(zip(column_headers, row)))
+    
+    return jsonify(json_data)
+
+@products.route('/outfit', methods = ['GET'])
+def get_outfit(UserID):
+
+    query = '''
+        SELECT OutfitID, CostRating, Style, BodyFit
+        FROM Outfit O JOIN User U on O.UserID = U.UserID
+        JOIN ClothingItem CI on O.ItemID = CI.ItemID
+        WHERE  UserID = {0}’’’.format(UserID
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+
+    column_headers = [x[0] for x in cursor.description]
+
+    # create an empty dictionary object to use in 
+    # putting column headers together with data
+    json_data = []
+
+    # fetch all the data from the cursor
+    theData = cursor.fetchall()
+
+    # for each of the rows, zip the data elements together with
+    # the column headers. 
+    for row in theData:
+        json_data.append(dict(zip(column_headers, row)))
+    
+    return jsonify(json_data)
+
+
+@products.route('/ClothingItem', methods = ['GET'])
+def get_price(UserID):
+
+    query = '''
+        SELECT CI.Name, CI.Price, CI.Description
+        FROM ClothingItem CI JOIN Outfit O on CI.ItemId = O.ItemID
+        JOIN User U on U.UserID = O.UserID
+        WHERE UserID = {0}’’’.format(UserID) 
+        '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+
+    column_headers = [x[0] for x in cursor.description]
+
+    # create an empty dictionary object to use in 
+    # putting column headers together with data
+    json_data = []
+
+    # fetch all the data from the cursor
+    theData = cursor.fetchall()
+
+    # for each of the rows, zip the data elements together with
+    # the column headers. 
+    for row in theData:
+        json_data.append(dict(zip(column_headers, row)))
+    
+    return jsonify(json_data)
+
+
+@products.route('/ShoppingCart/<CartID>', methods = ['GET'])
+def get_all_categories(UserID):
+    query = '''
+        SELECT CI.ItemID, CI.Name, CI.Description, CI.Price, CI.Size
+        FROM Shopping_Cart SC
+        JOIN Clothing_Item CI ON SC.CartID = CI.CartID
+        JOIN User U ON SC.CartID = U.CartID
+        WHERE U.UserID = {0}'''.format(UserID)
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    json_data = []
+    # fetch all the column headers and then all the data from the cursor
+    column_headers = [x[0] for x in cursor.description]
+    theData = cursor.fetchall()
+    # zip headers and data together into dictionary and then append to json data dict.
+    for row in theData:
+        json_data.append(dict(zip(column_headers, row)))
+    
+    return jsonify(json_data)
+
+
+@products.route('/PaymentOptions/<Type>', methods = ['GET'])
+def get_all_categories(UserID):
+    query = '''
+        SELECT DISTINCT Type
+        FROM Payment_Option
+        WHERE Type IN ('Credit Card', 'Debit Card', 'Cash on Delivery')'''
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    json_data = []
+    # fetch all the column headers and then all the data from the cursor
+    column_headers = [x[0] for x in cursor.description]
+    theData = cursor.fetchall()
+    # zip headers and data together into dictionary and then append to json data dict.
+    for row in theData:
+        json_data.append(dict(zip(column_headers, row)))
+    
+    return jsonify(json_data)
+
+
+
+
+@products.route('/Brand', methods = ['GET'])
+def get_all_categories(brandname):
+    query = '''
+    SELECT 
+    ci.Name AS ClothingItemName,
+    ci.Type AS ClothingItemType,
+    ci.BrandName AS Brand,
+    b.Rating AS BrandRating
+    FROM Clothing_Item ci
+    JOIN  Brand b ON ci.BrandName = b.Name
+    WHERE b.Name = {0}'''.format(brandname)
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    json_data = []
+    # fetch all the column headers and then all the data from the cursor
+    column_headers = [x[0] for x in cursor.description]
+    theData = cursor.fetchall()
+    # zip headers and data together into dictionary and then append to json data dict.
+    for row in theData:
+        json_data.append(dict(zip(column_headers, row)))
+    
+    return jsonify(json_data)
+
+
+
+
+   ### Get all discount for all products 
+@products.route('/Discounts{Amount}', methods = ['GET'])
+def get_all_categories():
+    query = '''
+        SELECT Amount 
+        FROM Discount JOIN Clothing_Item ON Discount.DiscountID = Clothing_Item.DiscountID
+        WHERE Clothing_Item.DiscountID IS NOT NULL
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+
+    json_data = []
+    # fetch all the column headers and then all the data from the cursor
+    column_headers = [x[0] for x in cursor.description]
+    theData = cursor.fetchall()
+    # zip headers and data together into dictionary and then append to json data dict.
+    for row in theData:
+        json_data.append(dict(zip(column_headers, row)))
+    
+    return jsonify(json_data)
+
+
+
+
+ ### Get all discount for all products 
+@products.route('/Notification', methods = ['GET'])
+def get_all_categories():
+    query = '''
+        SELECT *
+        FROM NOTIFICATIONS
+    '''
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+
+    json_data = []
+    # fetch all the column headers and then all the data from the cursor
+    column_headers = [x[0] for x in cursor.description]
+    theData = cursor.fetchall()
+    # zip headers and data together into dictionary and then append to json data dict.
+    for row in theData:
+        json_data.append(dict(zip(column_headers, row)))
+    
+    return jsonify(json_data)
+
+
+
+
+@products.route('/products/Categories/<CategoryID>', methods=['GET'])
+def get_categories(UserID):
+    query = 'SELECT clothing_item.Name, category.CategoryName, category.Material \
+            FROM User JOIN Outfit JOIN Clothing_Item JOIN category \
+            WHERE id = {0}'.format(UserID)
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    the_response.mimetype = 'application/json'
+    return the_response
