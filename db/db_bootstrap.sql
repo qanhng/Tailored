@@ -1,4 +1,4 @@
-CREATE DATABASE IF NOT EXISTS Tailored;
+create database if not exist tailored;
 
 grant all privileges on Tailored.* to 'root'@'%';
 flush privileges;
@@ -8,7 +8,7 @@ USE Tailored;
 CREATE TABLE IF NOT EXISTS Shipping_Option (
     ShippingOptionID int AUTO_INCREMENT PRIMARY KEY,
     Cost decimal(4, 2) NOT NULL,
-    Duration varchar(200) NOT NULL
+    Duration varchar(30) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Shopping_Cart(
@@ -198,13 +198,12 @@ CREATE TABLE IF NOT EXISTS Item_Outfit (
 /* Insert data */
 
 /* Insert Shipping Options */
-insert into Shipping_Option (Cost, Duration) values ( 4.99, 'Standard Shipping - 5 business days');
-insert into Shipping_Option (Cost, Duration) values ( 9.99, 'Expedited Shipping - 2 business days');
-insert into Shipping_Option (Cost, Duration) values (14.99, 'Overnight Shipping');
-insert into Shipping_Option (Cost, Duration) values ( 8.99, 'Standard International Shipping - 7 business days');
-insert into Shipping_Option (Cost, Duration) values ( 20.99, 'Expedited International Shipping - 3 business days');
-insert into Shipping_Option (Cost, Duration) values ( 3.99, 'Expedited Shipping Selected Areas');
-insert into Shipping_Option (Cost, Duration) values ( 2.99, 'Standard Shipping Selected Areas');
+insert into Shipping_Option (ShippingOptionID, Cost, Duration) values (1, 4.99, 'Standard Shipping - 5 business days');
+insert into Shipping_Option (ShippingOptionID, Cost, Duration) values (2, 9.99, 'Expedited Shipping - 2 business days');
+insert into Shipping_Option (ShippingOptionID, Cost, Duration) values (3, 14.99, 'Overnight Shipping');
+insert into Shipping_Option (ShippingOptionID, Cost, Duration) values (4, 8.99, 'Standard International Shipping - 7 business days');
+insert into Shipping_Option (ShippingOptionID, Cost, Duration) values (5, 20.99, 'Expedited International Shipping - 3 business days');
+insert into Shipping_Option (ShippingOptionID, Cost, Duration) values (7, 2.99, 'Standard Shipping Selected Areas');
 
 /* Insert Shopping Carts */
 insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 99.12, 40, '7');
