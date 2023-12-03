@@ -3,8 +3,7 @@ create database if not exist tailored;
 grant all privileges on tailored.* to 'root'@'%';
 flush privileges;
 
-CREATE DATABASE Tailored;
-USE Tailored;
+USE tailored;
 
 CREATE TABLE IF NOT EXISTS Shipping_Option (
     ShippingOptionID int AUTO_INCREMENT PRIMARY KEY,
