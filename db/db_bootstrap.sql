@@ -1333,4 +1333,3 @@ insert into PurchaseHistory_Outfit (PurchaseHistoryID, OutfitID) values ('1', '3
 insert into PurchaseHistory_Outfit (PurchaseHistoryID, OutfitID) values ('45', '25');
 insert into PurchaseHistory_Outfit (PurchaseHistoryID, OutfitID) values ('20', '10');
 
-
