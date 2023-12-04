@@ -302,34 +302,6 @@ def get_brand(brandname):
     
     return jsonify(json_data)
 
-
-
-
-   ### Get all discount for all products 
-@products.route('/Discounts{Amount}', methods = ['GET'])
-def get_discounts():
-    query = '''
-        SELECT Amount 
-        FROM Discount JOIN Clothing_Item ON Discount.DiscountID = Clothing_Item.DiscountID
-        WHERE Clothing_Item.DiscountID IS NOT NULL
-    '''
-
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-
-    json_data = []
-    # fetch all the column headers and then all the data from the cursor
-    column_headers = [x[0] for x in cursor.description]
-    theData = cursor.fetchall()
-    # zip headers and data together into dictionary and then append to json data dict.
-    for row in theData:
-        json_data.append(dict(zip(column_headers, row)))
-    
-    return jsonify(json_data)
-
-
-
-
  ### Get all discount for all products 
 @products.route('/Notification', methods = ['GET'])
 def get_notifications():
