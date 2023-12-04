@@ -157,8 +157,8 @@ def get_all_categories():
     return jsonify(json_data)
 
     ### Get all discount for all products 
-@products.route('/Discounts{Amount}', methods = ['GET'])
-def get_all_categories():
+@products.route('/Discounts/<Amount>', methods = ['GET'])
+def get_amount():
     query = '''
         SELECT Amount 
         FROM Discount JOIN Clothing_Item ON Discount.DiscountID = Clothing_Item.DiscountID
@@ -209,7 +209,7 @@ def get_outfit(UserID):
 
 
 @products.route('/ClothingItem', methods = ['GET'])
-def get_price(UserID):
+def get_clothingitem(UserID):
 
     query = '''
         SELECT CI.Name, CI.Price, CI.Description
@@ -238,7 +238,7 @@ def get_price(UserID):
 
 
 @products.route('/ShoppingCart/<CartID>', methods = ['GET'])
-def get_all_categories(UserID):
+def get_shoopingcart(UserID):
     query = '''
         SELECT CI.ItemID, CI.Name, CI.Description, CI.Price, CI.Size
         FROM Shopping_Cart SC
@@ -259,7 +259,7 @@ def get_all_categories(UserID):
 
 
 @products.route('/PaymentOptions/<Type>', methods = ['GET'])
-def get_all_categories(UserID):
+def get_payment_options(UserID):
     query = '''
         SELECT DISTINCT Type
         FROM Payment_Option
@@ -280,7 +280,7 @@ def get_all_categories(UserID):
 
 
 @products.route('/Brand', methods = ['GET'])
-def get_all_categories(brandname):
+def get_brand(brandname):
     query = '''
     SELECT 
     ci.Name AS ClothingItemName,
@@ -307,7 +307,7 @@ def get_all_categories(brandname):
 
    ### Get all discount for all products 
 @products.route('/Discounts{Amount}', methods = ['GET'])
-def get_all_categories():
+def get_discounts():
     query = '''
         SELECT Amount 
         FROM Discount JOIN Clothing_Item ON Discount.DiscountID = Clothing_Item.DiscountID
@@ -332,7 +332,7 @@ def get_all_categories():
 
  ### Get all discount for all products 
 @products.route('/Notification', methods = ['GET'])
-def get_all_categories():
+def get_notifications():
     query = '''
         SELECT *
         FROM NOTIFICATIONS
