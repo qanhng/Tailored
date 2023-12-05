@@ -127,7 +127,7 @@ def add_new_wishlist():
     return 'Success!'
 
 @customers.route('/wishlist/<itemID>', methods=['POST'])
-def add_new_wishlist():
+def add_new_item_wishlist():
     
     # collecting data from the request object 
     the_data = request.json
