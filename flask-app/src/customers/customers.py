@@ -195,6 +195,24 @@ def update_payment_method(userID):
 
 @customers.route('/shippingOptions/<userID>', methods = ['GET'])
 def get_shipping_options(userID):
+    query = '''SELECT SO.Duration, SO.Cost, SI.ShippingInfoID, SI.Name, SI.City, SI.State, SI.Street,
+      SI.ZipCode FROM Shipping_Option SO JOIN Shopping_Cart SC on SO.ShippingOptionID = SC.ShippingOptionID
+    JOIN Tailored.User U on SC.CartID = U.CartID  JOIN Shipping_Info SI on SO.ShippingOptionID = SI.ShippingOptionID 
+    WHERE U.UserID =  ''' + str(userID)
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    the_response.mimetype = 'application/json'
+    return the_response
+
+@customers.route('/shippingOptions/<userID>', methods = ['GET'])
+def get_shipping_options(userID):
     query = '''SELECT SO.Duration, SO.Cost, SI.Name, SI.City, SI.State, SI.Street,
       SI.ZipCode FROM Shipping_Option SO JOIN Shopping_Cart SC on SO.ShippingOptionID = SC.ShippingOptionID
     JOIN Tailored.User U on SC.CartID = U.CartID  JOIN Shipping_Info SI on SO.ShippingOptionID = SI.ShippingOptionID 
