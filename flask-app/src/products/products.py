@@ -275,17 +275,13 @@ def get_payment_options(UserID):
 
 
 
-@products.route('/Brand', methods = ['GET'])
-def get_brand(brandname):
+@products.route('/Brand/<itemid>', methods = ['GET'])
+def get_brand(itemid):
     query = '''
-    SELECT 
-    ci.Name AS ClothingItemName,
-    ci.Type AS ClothingItemType,
-    ci.BrandName AS Brand,
-    b.Rating AS BrandRating
+    SELECT b.Type, b.Rating
     FROM Clothing_Item ci
     JOIN  Brand b ON ci.BrandName = b.Name
-    WHERE b.Name = {0}'''.format(brandname)
+    WHERE ci.ItemID = ''' + str(itemid)
     cursor = db.get_db().cursor()
     cursor.execute(query)
     json_data = []
@@ -322,11 +318,11 @@ def get_notifications():
 
 
 
-@products.route('/products/Categories/<CategoryID>', methods=['GET'])
-def get_categories(UserID):
-    query = 'SELECT clothing_item.Name, category.CategoryName, category.Material \
-            FROM User JOIN Outfit JOIN Clothing_Item JOIN category \
-            WHERE id = {0}'.format(UserID)
+@products.route('/Categories/<itemID>', methods=['GET'])
+def get_categories(itemID):
+    query = '''SELECT CI.Name, C.CategoryName, C.Material
+            FROM Clothing_Item CI JOIN Category C ON CI.CategoryID = C.CategoryID
+            WHERE CI.ItemID = ''' + str(itemID)
     cursor = db.get_db().cursor()
     cursor.execute(query)
     row_headers = [x[0] for x in cursor.description]
@@ -338,6 +334,7 @@ def get_categories(UserID):
     the_response.status_code = 200
     the_response.mimetype = 'application/json'
     return the_response
+
 
 
 @products.route('/ShoppingCart', methods=['POST'])
@@ -384,3 +381,19 @@ def get_shopping_cart_info(userID):
     return the_response
 
 
+@products.route('/Style/<itemID>', methods=['GET'])
+def get_style(itemID):
+    query = '''SELECT S.Color, S.AestheticName, S.TrendRating
+            FROM Clothing_Item CI JOIN Style S ON CI.StyleID = S.StyleID
+            WHERE CI.ItemID = ''' + str(itemID)
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    the_response.mimetype = 'application/json'
+    return the_response
