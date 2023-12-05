@@ -40,8 +40,9 @@ def get_wishlist(userID):
     cursor = db.get_db().cursor()
     query= '''SELECT CI.ItemID, CI.Name AS ItemName, CI.Description, CI.Price, CI.Size, CI.BrandName, CI.StyleID
             FROM Wishlist W
-            JOIN Clothing_Item CI ON W.WishlistID = CI.CartID
-            JOIN User U ON W.UserID = U.UserID
+            JOIN Wishlist_Item WI ON W.WishlistID = WI.WishlistID
+            JOIN Clothing_Item CI ON CI.ItemID = WI.ItemID
+            JOIN User U ON U.UserID = W.UserID
             WHERE U.UserID = ''' + str(userID)
     cursor.execute(query)
     row_headers = [x[0] for x in cursor.description]
@@ -90,9 +91,11 @@ def get_all_users():
     return the_response
 
 @customers.route('/user/Wishlist_Item/<ItemID>', methods=['DELETE'])
-def delete_wishlist_item(ItemID):
+def delete_wishlist_item(ItemID, UserID):
     # Constructing the delete query
-    query = 'DELETE FROM Wishlist_Item WHERE ItemID = ' + str(ItemID)
+    query = 'DELETE \
+            FROM Wishlist_Item \
+            WHERE WishlistID = ' + str(UserID), 'ItemID = ' + str(ItemID)
 
     # Executing and committing the delete statement
     cursor = db.get_db().cursor()
