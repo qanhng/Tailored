@@ -273,7 +273,7 @@ def get_payment_options(UserID):
 @products.route('/Brand/<itemid>', methods = ['GET'])
 def get_brand(itemid):
     query = '''
-    SELECT b.Type, b.Rating
+    SELECT b.Type, b.Rating, b.Name
     FROM Clothing_Item ci
     JOIN  Brand b ON ci.BrandName = b.Name
     WHERE ci.ItemID = ''' + str(itemid)

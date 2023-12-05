@@ -54,25 +54,6 @@ def get_wishlist(itemID):
     the_response.mimetype = 'application/json'
     return the_response
 
-@customers.route('/ShippingOptions', methods=['GET'])
-def get_shipping_option(UserID):
-    cursor = db.get_db().cursor()
-    query= '''SELECT 
-            SC.CartID,SC.Cost AS CartCost, SO.ShippingOptionID, SO.Cost AS ShippingCost, SO.Duration
-            FROM Shopping_Cart SC JOIN Shipping_Option SO ON SC.ShippingOptionID = SO.ShippingOptionID
-            JOIN User U ON SC.CartID = U.CartID
-            WHERE U.UserID = {0}'''.format(UserID)
-    cursor.execute(query)
-    row_headers = [x[0] for x in cursor.description]
-    json_data = []
-    theData = cursor.fetchall()
-    for row in theData:
-        json_data.append(dict(zip(row_headers, row)))
-    the_response = make_response(jsonify(json_data))
-    the_response.status_code = 200
-    the_response.mimetype = 'application/json'
-    return the_response
-
 @customers.route('/customers/PurchaseHistories/<PurchaseAesthetic>', methods=['GET'])
 def get_purchaseAesthetic(UserID):
     query = 'SELECT PH.PurchaseAesthetic \
@@ -122,7 +103,7 @@ def delete_wishlist_item(ItemID, UserID):
 
     return 'Item deleted successfully!'
 
-@customers.route('/user', methods=['POST'])
+@customers.route('/user/wishlist', methods=['POST'])
 def add_new_wishlist():
     
     # collecting data from the request object 
@@ -136,6 +117,27 @@ def add_new_wishlist():
     # Constructing the query
     query = 'INSERT INTO Wishlist (Name, UserID) VALUES (%s, %s, %s)'
     values = (name, userID, 1)
+
+    # executing and committing the insert statement 
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+
+    return 'Success!'
+
+@customers.route('/wishlist/<itemID>', methods=['POST'])
+def add_new_wishlist_information():
+    
+    # collecting data from the request object 
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    userID = the_data['SelectedID']
+    itemID = the_data['itemID']
+
+    # Constructing the query
+    query = 'INSERT INTO Wishlist_Item (userID, itemID) VALUES (%s, %s)'
+    values = (userID, itemID)
 
     # executing and committing the insert statement 
     cursor = db.get_db().cursor()
@@ -181,18 +183,29 @@ def update_payment_method(userID):
     the_data = request.json
     
     new_type = the_data.get('new_type')
-    
-    # grab cart id and previous data needed
-    paymentInfo = get_payment_options(userID)
-    
-    numID = str(paymentInfo['CartID'])
-    prev_type = str(paymentInfo['Type'])
 
     # update Payment Options
-    the_query = 'UPDATE Payment_Option SET Type =  ' + str(new_type) + ' WHERE CartID = ' + str(numID) + ';'
-    
+    the_query = 'UPDATE Payment_Option SET Type = %s WHERE CartID = %s'
     cursor = db.get_db().cursor()
-    cursor.execute(the_query)
-    db.get_db().commit()
+    cursor.execute(the_query, (new_type, userID))   
 
     return "successfully editted paymentoption for#{0}!".format(userID)
+
+
+@customers.route('/shippingOptions/<userID>', methods = ['GET'])
+def get_shipping_options(userID):
+    query = '''SELECT SO.Duration, SO.Cost, SI.Name, SI.City, SI.State, SI.Street,
+      SI.ZipCode FROM Shipping_Option SO JOIN Shopping_Cart SC on SO.ShippingOptionID = SC.ShippingOptionID
+    JOIN Tailored.User U on SC.CartID = U.CartID  JOIN Shipping_Info SI on SO.ShippingOptionID = SI.ShippingOptionID 
+    WHERE U.UserID =  ''' + str(userID)
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    the_response.mimetype = 'application/json'
+    return the_response
