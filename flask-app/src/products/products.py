@@ -178,16 +178,12 @@ def get_amount():
     
     return jsonify(json_data)
 
-@products.route('/outfit', methods = ['GET'])
-def get_outfit(UserID):
-
+@products.route('/outfit/<userID>', methods = ['GET'])
+def get_outfit(userID):
     query = '''
-        SELECT OutfitID, CostRating, Style, BodyFit
+        SELECT O.Style, O.BodyFit, O.Price, O.CostRating, O.Name
         FROM Outfit O JOIN User U on O.UserID = U.UserID
-        JOIN ClothingItem CI on O.ItemID = CI.ItemID
-        WHERE  UserID = {0}’’’.format(UserID
-    '''
-
+        WHERE O.UserID =   ''' + str(userID)
     cursor = db.get_db().cursor()
     cursor.execute(query)
 
@@ -208,15 +204,15 @@ def get_outfit(UserID):
     return jsonify(json_data)
 
 
-@products.route('/ClothingItem', methods = ['GET'])
-def get_clothingitem(UserID):
+@products.route('/ClothingItem/<userID>', methods = ['GET'])
+def get_clothingitem(userID):
 
     query = '''
-        SELECT CI.Name, CI.Price, CI.Description
-        FROM ClothingItem CI JOIN Outfit O on CI.ItemId = O.ItemID
-        JOIN User U on U.UserID = O.UserID
-        WHERE UserID = {0}’’’.format(UserID) 
-        '''
+        SELECT CI.Name, CI.Price, CI.Description, CI.Brandname
+        FROM Outfit O JOIN User U on O.UserID = U.UserID
+        Join Tailored.Item_Outfit I on O.OutfitID = I.OutfitID
+        JOIN Tailored.Clothing_Item CI on CI.ItemID = I.ItemID
+        WHERE O.UserID =  ''' + str(userID)
     cursor = db.get_db().cursor()
     cursor.execute(query)
 
@@ -307,7 +303,7 @@ def get_brand(brandname):
 def get_notifications():
     query = '''
         SELECT *
-        FROM Notifications
+        FROM Notifications;
     '''
 
     cursor = db.get_db().cursor()
