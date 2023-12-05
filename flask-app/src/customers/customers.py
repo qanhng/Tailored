@@ -210,12 +210,9 @@ def get_shipping_options(userID):
     the_response.mimetype = 'application/json'
     return the_response
 
-@customers.route('/shippingOptions/<userID>', methods = ['GET'])
-def get_shipping_options(userID):
-    query = '''SELECT SO.Duration, SO.Cost, SI.Name, SI.City, SI.State, SI.Street,
-      SI.ZipCode FROM Shipping_Option SO JOIN Shopping_Cart SC on SO.ShippingOptionID = SC.ShippingOptionID
-    JOIN Tailored.User U on SC.CartID = U.CartID  JOIN Shipping_Info SI on SO.ShippingOptionID = SI.ShippingOptionID 
-    WHERE U.UserID =  ''' + str(userID)
+@customers.route('/allShippingOptions', methods = ['GET'])
+def get_all_shipping_options():
+    query = '''SELECT DISTINCT SO.Duration FROM Shipping_Option SO'''
     cursor = db.get_db().cursor()
     cursor.execute(query)
     row_headers = [x[0] for x in cursor.description]
