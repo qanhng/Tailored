@@ -139,5 +139,59 @@ def add_new_wishlist():
     cursor = db.get_db().cursor()
     cursor.execute(query)
     db.get_db().commit()
-    
+
     return 'Success!'
+
+@customers.route('/paymentOptions/<userID>', methods = ['GET'])
+def get_payment_options(userID):
+    query = '''Select PO.Type, PO.CartID From Payment_Option PO JOIN Tailored.Shopping_Cart SC on PO.CartID = SC.CartID
+    JOIN Tailored.User U on SC.CartID = U.CartID
+    WHERE U.UserID = ''' + str(userID)
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    the_response.mimetype = 'application/json'
+    return the_response
+
+@customers.route('/possiblePaymentOptions', methods = ['GET'])
+def get_possible_payment_options():
+    query = 'SELECT DISTINCT PO.Type from Payment_Option PO'
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    the_response.mimetype = 'application/json'
+    return the_response
+
+@customers.route('/editPaymentOption/<userID>', methods=['PUT'])
+def update_payment_method(userID):
+    the_data = request.json
+    print(the_data)
+
+    new_type = the_data.get('new_type')
+    
+    # grab cart id and previous data needed
+    paymentInfo = get_payment_options(userID)
+    
+    numID = str(paymentInfo['CartID'])
+    prev_type = str(paymentInfo['Type'])
+
+    # update Payment Options
+    the_query = 'UPDATE Payment_Option SET Type =  ' + str(new_type) + ' WHERE CartID = ' + str(numID) + ';'
+    
+    cursor = db.get_db().cursor()
+    cursor.execute(the_query)
+    db.get_db().commit()
+
+    return "successfully editted paymentoption for#{0}!".format(userID)
