@@ -75,7 +75,6 @@ def get_most_pop_products():
 
     return jsonify(json_data)
 
-
 @products.route('/tenMostExpensive', methods=['GET'])
 def get_10_most_expensive_products():
     
@@ -253,7 +252,6 @@ def get_shoppingcart(UserID):
     
     return jsonify(json_data)
 
-
 @products.route('/PaymentOptions/<Type>', methods = ['GET'])
 def get_payment_options(UserID):
     query = '''
@@ -271,9 +269,6 @@ def get_payment_options(UserID):
         json_data.append(dict(zip(column_headers, row)))
     
     return jsonify(json_data)
-
-
-
 
 @products.route('/Brand/<itemid>', methods = ['GET'])
 def get_brand(itemid):
@@ -315,9 +310,6 @@ def get_notifications():
     
     return jsonify(json_data)
 
-
-
-
 @products.route('/Categories/<itemID>', methods=['GET'])
 def get_categories(itemID):
     query = '''SELECT CI.Name, C.CategoryName, C.Material
@@ -334,8 +326,6 @@ def get_categories(itemID):
     the_response.status_code = 200
     the_response.mimetype = 'application/json'
     return the_response
-
-
 
 @products.route('/ShoppingCart', methods=['POST'])
 def add_new_shopping():
@@ -397,4 +387,3 @@ def get_style(itemID):
     the_response.status_code = 200
     the_response.mimetype = 'application/json'
     return the_response
-
