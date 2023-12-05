@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS ShippingInfo_User (
 CREATE TABLE IF NOT EXISTS Notifications (
     NotificationID int AUTO_INCREMENT PRIMARY KEY,
     SubjectLine varchar(100) NOT NULL,
-    Message text,
+    Messages text,
     TimeStamp datetime DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
@@ -132,7 +132,7 @@ CREATE TABLE IF NOT EXISTS Brand (
 CREATE TABLE IF NOT EXISTS Clothing_Item (
     ItemID int AUTO_INCREMENT PRIMARY KEY,
     Size varchar(3) NOT NULL,
-    Name varchar(75) NOT NULL,
+    Name_Item varchar(75) NOT NULL,
     Description text,
     Price decimal(10, 2) NOT NULL,
     DiscountID int,
@@ -521,36 +521,36 @@ insert into ShippingInfo_User (UserID, ShippingInfoId) values ('10', '7');
 insert into ShippingInfo_User (UserID, ShippingInfoId) values ('11', '5');
 
 /* Insert Notifications */
-insert into Notifications (SubjectLine, Message, TimeStamp) values ('Flash Sale Alert!', 'Grab your favorites before they are gone', '2023-06-06 03:30:44');
-insert into Notifications (SubjectLine, Message, TimeStamp) values ('New Arrivals', 'Take a look at our new fashion finds!', '2023-09-15 17:52:58');
-insert into Notifications (SubjectLine, Message, TimeStamp) values ('Half Price Alert', 'All items are 50% off!!!', '2023-03-09 04:43:41');
-insert into Notifications (SubjectLine, Message, TimeStamp) values ('Your Wishlist items are on sale!', 'Check out your wishlist now!', '2023-02-21 05:01:13');
-insert into Notifications (SubjectLine, Message, TimeStamp) values ('$8 Off All Tops', 'Check out your favorite tops!', '2023-06-02 23:58:48');
-insert into Notifications (SubjectLine, Message, TimeStamp) values ('Alert! 20% Off', 'Your favorite items are now 20% off', '2023-05-01 15:11:31');
-insert into Notifications (SubjectLine, Message, TimeStamp) values ('Limited Offer Today', '$10 off all orders above $50', '2023-01-11 11:15:01');
-insert into Notifications (SubjectLine, Message, TimeStamp) values ('BLACK FRIDAY DEALS', 'Biggest sale of the year is here!', '2023-11-24 11:24:10');
-insert into Notifications (SubjectLine, Message, TimeStamp) values ('Winter Blowout', '25% off outerwear, wool, and knit tops', '2023-11-03 03:42:44');
-insert into Notifications (SubjectLine, Message, TimeStamp) values ('Spring Sale Is Here!', 'Your favorite tops are 25% off now', '2023-08-15 10:44:37');
-insert into Notifications (SubjectLine, Message, TimeStamp) values ('Weekend Flash Sale', 'Check out amazing outfits at 50% off', '2023-04-18 04:47:19');
-insert into Notifications (SubjectLine, Message, TimeStamp) values ('Newly Curated Outfits!', 'You will definitely love these outfits', '2023-01-05 13:25:24');
-insert into Notifications (SubjectLine, Message, TimeStamp) values ('CYBER MONDAY', 'Miss out Black Friday deals? - 50% off everything today! ', '2023-11-27 02:56:19');
-insert into Notifications (SubjectLine, Message, TimeStamp) values ('Clearance Discounts Only Today', 'Selected items at 80% discount', '2023-05-16 15:44:54');
-insert into Notifications (SubjectLine, Message, TimeStamp) values ('Amazing Deals', 'Selected items up to 70% off', '2022-12-31 22:04:15');
-insert into Notifications (SubjectLine, Message, TimeStamp) values ('Hurry! Limited Deals', '$7 off all trendy bags', '2023-08-11 22:22:56');
-insert into Notifications (SubjectLine, Message, TimeStamp) values ('New items from your favorite brands', 'Your favorite brands just dropped new styles', '2023-05-01 01:16:32');
-insert into Notifications (SubjectLine, Message, TimeStamp) values ('Add your wishlist to the cart now!', '$5 off everything only today', '2023-07-19 19:38:30');
-insert into Notifications (SubjectLine, Message, TimeStamp) values ('Your Order is Ready!', 'Your order is ready to be shipped to you, we will keep you updated!', '2023-10-03 00:23:28');
-insert into Notifications (SubjectLine, Message, TimeStamp) values ('Personalized Picks', 'Check out new outfits we have curated for YOU!', '2023-05-03 15:04:31');
-insert into Notifications (SubjectLine, Message, TimeStamp) values ('Your Order is on the way', 'Your Order will arrive soon! Look out for our notifications', '2023-10-24 15:06:43');
-insert into Notifications (SubjectLine, Message, TimeStamp) values ('Last piece - check out now!', 'Your favorite items are running out', '2023-01-13 15:34:59');
-insert into Notifications (SubjectLine, Message, TimeStamp) values ('Your Order has arrived!', 'Your order has been delivered - Let us know your feedback!', '2023-02-04 17:16:23');
-insert into Notifications (SubjectLine, Message, TimeStamp) values ('We hope you enjoy your order!', 'Let us know your experience', '2023-03-13 11:52:51');
-insert into Notifications (SubjectLine, Message, TimeStamp) values ('Trend Alert!', 'Trendy collection has just arrived', '2023-07-13 04:25:01');
-insert into Notifications (SubjectLine, Message, TimeStamp) values ('Upgrade Your Wardrobe', 'Personalized outfits to enhance your everyday styles!', '2023-01-24 20:21:32');
-insert into Notifications (SubjectLine, Message, TimeStamp) values ('Sneak Peek at the New Collection', 'Check out the new collection from our beloved brands', '2022-12-21 02:26:32');
-insert into Notifications (SubjectLine, Message, TimeStamp) values ('Thank you for shopping with us!', 'We hope you have an amazing experience. We will keep you updated on your order!', '2023-01-26 08:41:45');
-insert into Notifications (SubjectLine, Message, TimeStamp) values ('Ready for Summer Discount?', 'Add new items to your summer collection', '2023-05-22 23:21:32');
-insert into Notifications (SubjectLine, Message, TimeStamp) values ('24H Sale!', '40% off all styles only today', '2023-10-25 23:47:41');
+insert into Notifications (SubjectLine, Messages, TimeStamp) values ('Flash Sale Alert!', 'Grab your favorites before they are gone', '2023-06-06 03:30:44');
+insert into Notifications (SubjectLine, Messages, TimeStamp) values ('New Arrivals', 'Take a look at our new fashion finds!', '2023-09-15 17:52:58');
+insert into Notifications (SubjectLine, Messages, TimeStamp) values ('Half Price Alert', 'All items are 50% off!!!', '2023-03-09 04:43:41');
+insert into Notifications (SubjectLine, Messages, TimeStamp) values ('Your Wishlist items are on sale!', 'Check out your wishlist now!', '2023-02-21 05:01:13');
+insert into Notifications (SubjectLine, Messages, TimeStamp) values ('$8 Off All Tops', 'Check out your favorite tops!', '2023-06-02 23:58:48');
+insert into Notifications (SubjectLine, Messages, TimeStamp) values ('Alert! 20% Off', 'Your favorite items are now 20% off', '2023-05-01 15:11:31');
+insert into Notifications (SubjectLine, Messages, TimeStamp) values ('Limited Offer Today', '$10 off all orders above $50', '2023-01-11 11:15:01');
+insert into Notifications (SubjectLine, Messages, TimeStamp) values ('BLACK FRIDAY DEALS', 'Biggest sale of the year is here!', '2023-11-24 11:24:10');
+insert into Notifications (SubjectLine, Messages, TimeStamp) values ('Winter Blowout', '25% off outerwear, wool, and knit tops', '2023-11-03 03:42:44');
+insert into Notifications (SubjectLine, Messages, TimeStamp) values ('Spring Sale Is Here!', 'Your favorite tops are 25% off now', '2023-08-15 10:44:37');
+insert into Notifications (SubjectLine, Messages, TimeStamp) values ('Weekend Flash Sale', 'Check out amazing outfits at 50% off', '2023-04-18 04:47:19');
+insert into Notifications (SubjectLine, Messages, TimeStamp) values ('Newly Curated Outfits!', 'You will definitely love these outfits', '2023-01-05 13:25:24');
+insert into Notifications (SubjectLine, Messages, TimeStamp) values ('CYBER MONDAY', 'Miss out Black Friday deals? - 50% off everything today! ', '2023-11-27 02:56:19');
+insert into Notifications (SubjectLine, Messages, TimeStamp) values ('Clearance Discounts Only Today', 'Selected items at 80% discount', '2023-05-16 15:44:54');
+insert into Notifications (SubjectLine, Messages, TimeStamp) values ('Amazing Deals', 'Selected items up to 70% off', '2022-12-31 22:04:15');
+insert into Notifications (SubjectLine, Messages, TimeStamp) values ('Hurry! Limited Deals', '$7 off all trendy bags', '2023-08-11 22:22:56');
+insert into Notifications (SubjectLine, Messages, TimeStamp) values ('New items from your favorite brands', 'Your favorite brands just dropped new styles', '2023-05-01 01:16:32');
+insert into Notifications (SubjectLine, Messages, TimeStamp) values ('Add your wishlist to the cart now!', '$5 off everything only today', '2023-07-19 19:38:30');
+insert into Notifications (SubjectLine, Messages, TimeStamp) values ('Your Order is Ready!', 'Your order is ready to be shipped to you, we will keep you updated!', '2023-10-03 00:23:28');
+insert into Notifications (SubjectLine, Messages, TimeStamp) values ('Personalized Picks', 'Check out new outfits we have curated for YOU!', '2023-05-03 15:04:31');
+insert into Notifications (SubjectLine, Messages, TimeStamp) values ('Your Order is on the way', 'Your Order will arrive soon! Look out for our notifications', '2023-10-24 15:06:43');
+insert into Notifications (SubjectLine, Messages, TimeStamp) values ('Last piece - check out now!', 'Your favorite items are running out', '2023-01-13 15:34:59');
+insert into Notifications (SubjectLine, Messages, TimeStamp) values ('Your Order has arrived!', 'Your order has been delivered - Let us know your feedback!', '2023-02-04 17:16:23');
+insert into Notifications (SubjectLine, Messages, TimeStamp) values ('We hope you enjoy your order!', 'Let us know your experience', '2023-03-13 11:52:51');
+insert into Notifications (SubjectLine, Messages, TimeStamp) values ('Trend Alert!', 'Trendy collection has just arrived', '2023-07-13 04:25:01');
+insert into Notifications (SubjectLine, Messages, TimeStamp) values ('Upgrade Your Wardrobe', 'Personalized outfits to enhance your everyday styles!', '2023-01-24 20:21:32');
+insert into Notifications (SubjectLine, Messages, TimeStamp) values ('Sneak Peek at the New Collection', 'Check out the new collection from our beloved brands', '2022-12-21 02:26:32');
+insert into Notifications (SubjectLine, Messages, TimeStamp) values ('Thank you for shopping with us!', 'We hope you have an amazing experience. We will keep you updated on your order!', '2023-01-26 08:41:45');
+insert into Notifications (SubjectLine, Messages, TimeStamp) values ('Ready for Summer Discount?', 'Add new items to your summer collection', '2023-05-22 23:21:32');
+insert into Notifications (SubjectLine, Messages, TimeStamp) values ('24H Sale!', '40% off all styles only today', '2023-10-25 23:47:41');
 
 /* Insert User_Notif */
 insert into User_Notif (UserID, NotificationID) values ('17', '3');
