@@ -194,10 +194,10 @@ def update_payment_method(userID):
 
 @customers.route('/shippingOptions/<userID>', methods = ['GET'])
 def get_shipping_options(userID):
-    query = '''SELECT SO.Duration, SO.Cost, SI.ShippingInfoID, SI.Name, SI.City, SI.State, SI.Street,
-      SI.ZipCode FROM Shipping_Option SO JOIN Shopping_Cart SC on SO.ShippingOptionID = SC.ShippingOptionID
-    JOIN Tailored.User U on SC.CartID = U.CartID  JOIN Shipping_Info SI on SO.ShippingOptionID = SI.ShippingOptionID 
-    WHERE U.UserID =  ''' + str(userID)
+    query = '''SELECT SO.Duration, SO.Cost, SO.ShippingOptionID, SI.Name, SI.City, SI.State, SI.Street, SI.ZipCode,
+     FROM Shipping_Option SO  JOIN Shipping_Info SI on SO.ShippingOptionID = SI.ShippingOptionID
+        JOIN ShippingInfo_User SIU ON SI.ShippingInfoID = SIU.ShippingInfoID JOIN User U on SIU.UserID = U.UserID
+        WHERE U.UserID =  ''' + str(userID)
     cursor = db.get_db().cursor()
     cursor.execute(query)
     row_headers = [x[0] for x in cursor.description]
