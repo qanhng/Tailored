@@ -109,9 +109,12 @@ def get_all_users():
     return the_response
 
 @customers.route('/user/Wishlist_Item/<ItemID>', methods=['DELETE'])
-def delete_wishlist_item(ItemID):
+def delete_wishlist_item(ItemID, UserID):
     # Constructing the delete query
-    query = 'DELETE FROM Wishlist_Item WHERE ItemID = ' + str(ItemID)
+    query = 'DELETE \
+            FROM Wishlist_Item \
+            WHERE WishlistID = ' + str(UserID), \
+            'ItemID = ' + str(ItemID)
 
     # Executing and committing the delete statement
     cursor = db.get_db().cursor()
