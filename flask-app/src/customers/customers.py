@@ -127,7 +127,7 @@ def add_new_wishlist():
     return 'Success!'
 
 @customers.route('/wishlist/<itemID>', methods=['POST'])
-def add_new_item_wishlist():
+def add_new_wishlist():
     
     # collecting data from the request object 
     the_data = request.json
@@ -188,11 +188,11 @@ def update_payment_method(userID):
     # grab cart id and previous data needed
     paymentInfo = get_payment_options(userID)
     
-    numID = str(paymentInfo['CartID'])
-    prev_type = str(paymentInfo['Type'])
+    cart_id = str(paymentInfo[0].get('CartID'))
+    prev_type = str(paymentInfo[0].get('Type'))
 
     # update Payment Options
-    the_query = 'UPDATE Payment_Option SET Type =  ' + str(new_type) + ' WHERE CartID = ' + str(numID) + ';'
+    the_query = 'UPDATE Payment_Option SET Type =  ' + str(new_type) + ' WHERE CartID = ' + str(cart_id) + ';'
     
     cursor = db.get_db().cursor()
     cursor.execute(the_query)
