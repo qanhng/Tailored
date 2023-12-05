@@ -1,7 +1,6 @@
-from flask import Blueprint, request, jsonify, make_response
+from flask import Blueprint, request, jsonify, make_response, current_app
 import json
 from src import db
-
 
 customers = Blueprint('customers', __name__)
 
@@ -55,8 +54,6 @@ def get_wishlist(userID):
     the_response.mimetype = 'application/json'
     return the_response
 
-
-
 @customers.route('/ShippingOptions', methods=['GET'])
 def get_shipping_option(UserID):
     cursor = db.get_db().cursor()
@@ -75,7 +72,6 @@ def get_shipping_option(UserID):
     the_response.status_code = 200
     the_response.mimetype = 'application/json'
     return the_response
-
 
 @customers.route('/customers/PurchaseHistories/<PurchaseAesthetic>', methods=['GET'])
 def get_purchaseAesthetic(UserID):
@@ -112,24 +108,22 @@ def get_all_users():
     the_response.mimetype = 'application/json'
     return the_response
 
-@customers.route('/wishlist/<userID>', methods=['POST'])
-def add_new_wishlist(userID):
-    
-    # collecting data from the request object 
+@customers.route('/user/wishlist/delete', methods=['DELETE'])
+def delete_wishlist_item():
+    # Collecting data from the request object
     the_data = request.json
     current_app.logger.info(the_data)
 
-    #extracting the variable
-    name = the_data['wishlist_name']
+    # Extracting variables
+    wishlist_item_id = the_data['WishlistItemID']  # Assuming you have an ID for each item in the wishlist
 
-    # Constructing the query
-    query = 'INSERT INTO Wishlist (Name, UserID) VALUES (%s, %s)'
-    values = (name, userID)
-    current_app.logger.info(query % values)
+    # Constructing the delete query
+    query = 'DELETE FROM Wishlist WHERE WishlistItemID = %s'
+    values = (wishlist_item_id,)
 
-    # Executing and committing the insert statement
+    # Executing and committing the delete statement
     cursor = db.get_db().cursor()
     cursor.execute(query, values)
     db.get_db().commit()
 
-    return 'Success!'
+    return 'Item deleted successfully!'
