@@ -111,3 +111,25 @@ def get_all_users():
     the_response.status_code = 200
     the_response.mimetype = 'application/json'
     return the_response
+
+@customers.route('/wishlist/<userID>', methods=['POST'])
+def add_new_wishlist(userID):
+    
+    # collecting data from the request object 
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    #extracting the variable
+    name = the_data['wishlist_name']
+
+    # Constructing the query
+    query = 'INSERT INTO Wishlist (Name, UserID) VALUES (%s, %s)'
+    values = (name, userID)
+    current_app.logger.info(query % values)
+
+    # Executing and committing the insert statement
+    cursor = db.get_db().cursor()
+    cursor.execute(query, values)
+    db.get_db().commit()
+
+    return 'Success!'
