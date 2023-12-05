@@ -127,3 +127,25 @@ def delete_wishlist_item():
     db.get_db().commit()
 
     return 'Item deleted successfully!'
+
+@customers.route('/user', methods=['POST'])
+def add_new_wishlist():
+    
+    # collecting data from the request object 
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    #extracting the variable
+    name = the_data['Name']
+    userID = the_data['UserID']
+
+    # Constructing the query
+    query = 'INSERT INTO Wishlist (Name, UserID) VALUES (%s, %s, %s)'
+    values = (name, userID, 1)
+
+    # executing and committing the insert statement 
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+    
+    return 'Success!'
