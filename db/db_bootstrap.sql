@@ -132,7 +132,7 @@ CREATE TABLE IF NOT EXISTS Brand (
 CREATE TABLE IF NOT EXISTS Clothing_Item (
     ItemID int AUTO_INCREMENT PRIMARY KEY,
     Size varchar(3) NOT NULL,
-    Name_Item varchar(75) NOT NULL,
+    Name varchar(75) NOT NULL,
     Description text,
     Price decimal(10, 2) NOT NULL,
     DiscountID int,
