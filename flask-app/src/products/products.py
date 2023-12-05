@@ -208,7 +208,7 @@ def get_outfit(userID):
 def get_clothingitem(userID):
 
     query = '''
-        SELECT CI.Name, CI.Price, CI.Description, CI.Brandname
+        SELECT CI.Name, CI.Price, CI.Description, CI.Brandname, CI.ItemID
         FROM Outfit O JOIN User U on O.UserID = U.UserID
         Join Tailored.Item_Outfit I on O.OutfitID = I.OutfitID
         JOIN Tailored.Clothing_Item CI on CI.ItemID = I.ItemID
@@ -234,7 +234,7 @@ def get_clothingitem(userID):
 
 
 @products.route('/ShoppingCart/<CartID>', methods = ['GET'])
-def get_shoopingcart(UserID):
+def get_shoppingcart(UserID):
     query = '''
         SELECT CI.ItemID, CI.Name, CI.Description, CI.Price, CI.Size
         FROM Shopping_Cart SC
@@ -338,3 +338,49 @@ def get_categories(UserID):
     the_response.status_code = 200
     the_response.mimetype = 'application/json'
     return the_response
+
+
+@products.route('/ShoppingCart', methods=['POST'])
+def add_new_shopping():
+    # Collecting data from the request object
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    # Extracting the variables
+    ItemID = the_data['ItemID']
+    price = the_data['Price']
+
+    # Constructing the parameterized query
+    query = 'INSERT INTO Shopping_Cart (Cost, ItemID) VALUES (%s, %s, %s, %s)'
+    values = (price, ItemID, 1)
+
+    # Executing and committing the insert statement
+    cursor = db.get_db().cursor()
+    cursor.execute(query, values)
+    db.get_db().commit()
+
+    return 'Success!'
+
+@products.route('/ShoppingCart/<userID>', methods=['GET'])
+def get_shopping_cart_info(userID):
+    query = '''SELECT SC.ItemID, SC.CartID, CI.Name, CI.Price, U.UserID
+        FROM Shopping_Cart SC
+        JOIN Clothing_Item CI ON SC.CartID = CI.CartID
+        JOIN User U ON SC.CartID = U.CartID
+        JOIN ShippingInfo_User SIU on U.UserID = SIU.UserID
+        JOIN Shipping_Info SI on SIU.ShippingInfoID = SI.ShippingInfoID
+        JOIN Shipping_Option SO on SC.ShippingOptionID = SO.ShippingOptionID
+        WHERE U.UserID = ''' + str(userID)
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    the_response.mimetype = 'application/json'
+    return the_response
+
+
