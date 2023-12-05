@@ -1,4 +1,4 @@
-create database if not exists Tailored;
+create database Tailored;
 
 grant all privileges on Tailored.* to 'root'@'%';
 flush privileges;
