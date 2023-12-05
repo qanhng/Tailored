@@ -113,8 +113,7 @@ def delete_wishlist_item(ItemID, UserID):
     # Constructing the delete query
     query = 'DELETE \
             FROM Wishlist_Item \
-            WHERE WishlistID = ' + str(UserID), \
-            'ItemID = ' + str(ItemID)
+            WHERE WishlistID = ' + str(UserID), 'ItemID = ' + str(ItemID)
 
     # Executing and committing the delete statement
     cursor = db.get_db().cursor()
