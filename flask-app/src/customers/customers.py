@@ -111,7 +111,7 @@ def get_all_users():
 @customers.route('/user/Wishlist_Item/<ItemID>', methods=['DELETE'])
 def delete_wishlist_item(ItemID):
     # Constructing the delete query
-    query = 'DELETE FROM Wishlist_Item WHERE ItemID = {0}'.format(ItemID)
+    query = 'DELETE FROM Wishlist_Item WHERE ItemID = ' + str(ItemID)
 
     # Executing and committing the delete statement
     cursor = db.get_db().cursor()
@@ -177,8 +177,7 @@ def get_possible_payment_options():
 @customers.route('/editPaymentOption/<userID>', methods=['PUT'])
 def update_payment_method(userID):
     the_data = request.json
-    print(the_data)
-
+    
     new_type = the_data.get('new_type')
     
     # grab cart id and previous data needed
