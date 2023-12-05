@@ -110,10 +110,6 @@ def get_all_users():
 
 @customers.route('/user/Wishlist_Item/<ItemID>', methods=['DELETE'])
 def delete_wishlist_item(ItemID):
-    # Collecting data from the request object
-    the_data = request.json
-    current_app.logger.info(the_data)
-
     # Constructing the delete query
     query = 'DELETE FROM Wishlist_Item WHERE ItemID = {0}'.format(ItemID)
 
