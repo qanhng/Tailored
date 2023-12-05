@@ -115,7 +115,7 @@ def delete_wishlist_item(ItemID):
 
     # Executing and committing the delete statement
     cursor = db.get_db().cursor()
-    cursor.execute(query, values)
+    cursor.execute(query)
     db.get_db().commit()
 
     return 'Item deleted successfully!'
