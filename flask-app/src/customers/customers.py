@@ -92,7 +92,7 @@ def get_all_users():
 
 
 
-@customers.route('/user/Wishlist_Item/<ItemID>', methods=['DELETE'])
+@customers.route('/Wishlist_Item/<userID>', methods=['DELETE'])
 def delete_wishlist_item(userID):
     the_data = request.json
     
