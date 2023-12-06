@@ -7,11 +7,11 @@ Currently, whilst shopping for clothing or accessories, people run into the issu
 
 ## Getting started
 1. Clone this repository
-2. Create a file named 'db_root_password.txt' in the 'secrets/' folder and enter your root password for MySQL.
-3. Create a file neamed 'db_password.txt' in the 'secrets/' folder and enter the password for a non-root user.
-4. In your terminal, navigate to the 'docker_compose.yml' file.
-5. Build the images in Docker using this command: 'docker compose build'.
-6. Start the containers in detached mode with 'docker compose up -d'. Make sure the containers (web, db, appsmith) are running.
+2. Create a file named `db_root_password.txt` in the `secrets/` folder and enter your root password for MySQL.
+3. Create a file neamed `db_password.txt` in the `secrets/` folder and enter the password for a non-root user.
+4. In your terminal, navigate to the `docker_compose.yml` file.
+5. Build the images in Docker using this command: `docker compose build`.
+6. Start the containers in detached mode with `docker compose up -d`. Make sure the containers (web, db, appsmith) are running.
 
 ## Video Demo
 
