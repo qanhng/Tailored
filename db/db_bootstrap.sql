@@ -11,21 +11,20 @@ CREATE TABLE IF NOT EXISTS Shipping_Option (
     Duration varchar(100) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS Shopping_Cart(
-    CartID int AUTO_INCREMENT PRIMARY KEY,
-    Cost decimal(10,2) NOT NULL,
-    ItemID int NOT NULL,
-    ShippingOptionID int NOT NULL,
-    FOREIGN KEY (ShippingOptionID) REFERENCES Shipping_Option(ShippingOptionID)
-        ON UPDATE CASCADE ON DELETE CASCADE
-);
-
 CREATE TABLE IF NOT EXISTS User(
     UserID int AUTO_INCREMENT PRIMARY KEY,
     FirstName varchar(100) NOT NULL,
-    LastName varchar(100) NOT NULL,
-    CartID int NOT NULL,
-    FOREIGN KEY (CartID) REFERENCES Shopping_Cart(CartID)
+    LastName varchar(100) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Shopping_Cart(
+    CartID int AUTO_INCREMENT PRIMARY KEY,
+    Cost decimal(10,2) NOT NULL,
+    ShippingOptionID int NOT NULL,
+    UserID int NOT NULL,
+    FOREIGN KEY (ShippingOptionID) REFERENCES Shipping_Option(ShippingOptionID)
+        ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (UserID) REFERENCES User(UserID)
         ON UPDATE CASCADE ON DELETE CASCADE
 );
 
@@ -204,6 +203,16 @@ CREATE TABLE IF NOT EXISTS Wishlist_Item (
         ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS ShoppingCart_Item (
+    CartID int NOT NULL,
+    ItemID int NOT NULL,
+    PRIMARY KEY (CartID, ItemID),
+    FOREIGN KEY (CartID) REFERENCES Shopping_Cart (CartID)
+        ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (ItemID) REFERENCES Clothing_Item (ItemID)
+        ON UPDATE CASCADE ON DELETE CASCADE
+);
+
 
 /* Insert data */
 
@@ -216,89 +225,89 @@ insert into Shipping_Option (Cost, Duration) values (20.99, 'Expedited Internati
 insert into Shipping_Option (Cost, Duration) values (3.99, 'Expedited Shipping Selected Areas');
 insert into Shipping_Option (Cost, Duration) values (2.99, 'Standard Shipping Selected Areas');
 
-/* Insert Shopping Carts */
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 99.12, 40, '7');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 182.55, 3, '5');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 67.80, 8, '2');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 55.99, 9, '6');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 35.99, 16, '1');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 74.50, 26, '3');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 59.30, 9, '4');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 157.75, 23, '1');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 24.95, 7, '7');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 28.18, 6, '2');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 96.88, 10, '5');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 68.01, 15, '6');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 48.50, 17, '4');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 57.04, 25, '3');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 55.64, 38, '1');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 28.08, 2, '6');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 120.55, 14, '7');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 18.65, 39, '2');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 51.75, 18, '5');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 123.05, 12, '4');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 33.50, 29, '3');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 13.35, 24, '2');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 75.99, 36, '1');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 18.23, 34, '6');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 09.25, 13, '7');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 71.69, 15, '3');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 42.69, 23, '4');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 100.50, 37, '5');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 66.90, 40, '3');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 26.00, 31, '6');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 51.55, 23, '1');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 16.90, 32, '5');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 213.35, 24, '4');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 45.95, 15, '7');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 35.99, 16, '2');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 40.92, 2, '1');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 17.63, 13, '7');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 39.00, 26, '3');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 19.13, 33, '6');
-insert into Shopping_Cart ( Cost, ItemID, ShippingOptionID) values ( 97.50, 36, '2');
-
 /* Insert Users */
-insert into User (FirstName, LastName, CartID) values ('Amanda', 'Lee', '1');
-insert into User (FirstName, LastName, CartID) values ('Siya', 'Patel', '2');
-insert into User (FirstName, LastName, CartID) values ('Celine', 'Hapke', '3');
-insert into User (FirstName, LastName, CartID) values ('Reuben', 'Syson', '4');
-insert into User (FirstName, LastName, CartID) values ('Isabelle', 'Bissett', '5');
-insert into User (FirstName, LastName, CartID) values ('Noelyn', 'Feighney', '6');
-insert into User (FirstName, LastName, CartID) values ('Lizzie', 'Domniney', '7');
-insert into User (FirstName, LastName, CartID) values ('Caroljean', 'Mullally', '8');
-insert into User (FirstName, LastName, CartID) values ('Lynn', 'Jenteau', '9');
-insert into User (FirstName, LastName, CartID) values ('Quintin', 'Tuffin', '10');
-insert into User (FirstName, LastName, CartID) values ('Dan', 'Park', '11');
-insert into User (FirstName, LastName, CartID) values ('Rea', 'Shingfield', '12');
-insert into User (FirstName, LastName, CartID) values ('Maurice', 'Monier', '13');
-insert into User (FirstName, LastName, CartID) values ('Arya', 'Gupta', '14');
-insert into User (FirstName, LastName, CartID) values ('Robbie', 'Craxford', '15');
-insert into User (FirstName, LastName, CartID) values ('Doris', 'Lee', '16');
-insert into User (FirstName, LastName, CartID) values ('Merell', 'Caig', '17');
-insert into User (FirstName, LastName, CartID) values ('Kevin', 'Amori', '18');
-insert into User (FirstName, LastName, CartID) values ('Alica', 'Pawelczyk', '19');
-insert into User (FirstName, LastName, CartID) values ('Findlay', 'Kybird', '20');
-insert into User (FirstName, LastName, CartID) values ('Jacquelin', 'Li', '21');
-insert into User (FirstName, LastName, CartID) values ('Darcy', 'Barrack', '22');
-insert into User (FirstName, LastName, CartID) values ('Rica', 'Teodorski', '23');
-insert into User (FirstName, LastName, CartID) values ('Garreth', 'Yakutin', '24');
-insert into User (FirstName, LastName, CartID) values ('Dorris', 'McGrotty', '25');
-insert into User (FirstName, LastName, CartID) values ('Tandi', 'Haysar', '26');
-insert into User (FirstName, LastName, CartID) values ('Sheila', 'Brea', '27');
-insert into User (FirstName, LastName, CartID) values ('Jemimah', 'Trevear', '28');
-insert into User (FirstName, LastName, CartID) values ('Tina', 'Wan', '29');
-insert into User (FirstName, LastName, CartID) values ('Madelena', 'O''Flynn', '30');
-insert into User (FirstName, LastName, CartID) values ('Chance', 'Ockland', '31');
-insert into User (FirstName, LastName, CartID) values ('Jolynn', 'Wang', '32');
-insert into User (FirstName, LastName, CartID) values ('Karrie', 'Deporte', '33');
-insert into User (FirstName, LastName, CartID) values ('Cariotta', 'Antos', '34');
-insert into User (FirstName, LastName, CartID) values ('Franciska', 'Keniwell', '35');
-insert into User (FirstName, LastName, CartID) values ('Andrew', 'Kim', '36');
-insert into User (FirstName, LastName, CartID) values ('Peter', 'Fulford', '37');
-insert into User (FirstName, LastName, CartID) values ('Melinde', 'Mugford', '38');
-insert into User (FirstName, LastName, CartID) values ('Win', 'Pinckney', '39');
-insert into User (FirstName, LastName, CartID) values ('Margaretha', 'Croxford', '40');
+insert into User (FirstName, LastName) values ('Amanda', 'Lee');
+insert into User (FirstName, LastName) values ('Siya', 'Patel');
+insert into User (FirstName, LastName) values ('Celine', 'Hapke');
+insert into User (FirstName, LastName) values ('Reuben', 'Syson');
+insert into User (FirstName, LastName) values ('Isabelle', 'Bissett');
+insert into User (FirstName, LastName) values ('Noelyn', 'Feighney');
+insert into User (FirstName, LastName) values ('Lizzie', 'Domniney');
+insert into User (FirstName, LastName) values ('Caroljean', 'Mullally');
+insert into User (FirstName, LastName) values ('Lynn', 'Jenteau');
+insert into User (FirstName, LastName) values ('Quintin', 'Tuffin');
+insert into User (FirstName, LastName) values ('Dan', 'Park');
+insert into User (FirstName, LastName) values ('Rea', 'Shingfield');
+insert into User (FirstName, LastName) values ('Maurice', 'Monier');
+insert into User (FirstName, LastName) values ('Arya', 'Gupta');
+insert into User (FirstName, LastName) values ('Robbie', 'Craxford');
+insert into User (FirstName, LastName) values ('Doris', 'Lee');
+insert into User (FirstName, LastName) values ('Merell', 'Caig');
+insert into User (FirstName, LastName) values ('Kevin', 'Amori');
+insert into User (FirstName, LastName) values ('Alica', 'Pawelczyk');
+insert into User (FirstName, LastName) values ('Findlay', 'Kybird');
+insert into User (FirstName, LastName) values ('Jacquelin', 'Li');
+insert into User (FirstName, LastName) values ('Darcy', 'Barrack');
+insert into User (FirstName, LastName) values ('Rica', 'Teodorski');
+insert into User (FirstName, LastName) values ('Garreth', 'Yakutin');
+insert into User (FirstName, LastName) values ('Dorris', 'McGrotty');
+insert into User (FirstName, LastName) values ('Tandi', 'Haysar');
+insert into User (FirstName, LastName) values ('Sheila', 'Brea');
+insert into User (FirstName, LastName) values ('Jemimah', 'Trevear');
+insert into User (FirstName, LastName) values ('Tina', 'Wan');
+insert into User (FirstName, LastName) values ('Madelena', 'O''Flynn');
+insert into User (FirstName, LastName) values ('Chance', 'Ockland');
+insert into User (FirstName, LastName) values ('Jolynn', 'Wang');
+insert into User (FirstName, LastName) values ('Karrie', 'Deporte');
+insert into User (FirstName, LastName) values ('Cariotta', 'Antos');
+insert into User (FirstName, LastName) values ('Franciska', 'Keniwell');
+insert into User (FirstName, LastName) values ('Andrew', 'Kim');
+insert into User (FirstName, LastName) values ('Peter', 'Fulford');
+insert into User (FirstName, LastName) values ('Melinde', 'Mugford');
+insert into User (FirstName, LastName) values ('Win', 'Pinckney');
+insert into User (FirstName, LastName) values ('Margaretha', 'Croxford');
+
+/* Insert Shopping Carts */
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 99.12, 1, 1);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 182.55, 3, 2);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 67.80, 7, 3);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 55.99, 2, 4);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 35.99, 6, 5);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 74.50, 6, 6);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 59.30, 4, 7);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 157.75, 3, 8);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 24.95, 7, 9);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 28.18, 6, 10);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 96.88, 1, 11);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 68.01, 5, 12);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 48.50, 7, 13);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 57.04, 5, 14);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 55.64, 3, 15);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 28.08, 2, 16);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 120.55, 4, 17);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 18.65, 3, 18);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 51.75, 1, 19);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 123.05, 2, 20);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 33.50, 2, 21);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 13.35, 4, 22);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 75.99, 6, 23);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 18.23, 3, 24);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 09.25, 1, 25);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 71.69, 5, 26);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 42.69, 2, 27);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 100.50, 7, 28);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 66.90, 4, 29);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 26.00, 3, 30);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 51.55, 2, 31);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 16.90, 2, 32);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 213.35, 4, 33);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 45.95, 1, 34);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 35.99, 1, 35);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 40.92, 2, 36);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 17.63, 1, 37);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 39.00, 2, 38);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 19.13, 3, 39);
+insert into Shopping_Cart (Cost, ShippingOptionID, UserID) values ( 97.50, 3, 40);
 
 /* Insert Persona */
 insert into Persona (Age, Gender, StylePreference, UserID) values (20, 'Female', 'Vintage', '22');
@@ -1546,7 +1555,204 @@ insert into Wishlist_Item (WishlistID, ItemID) values ('38', '37');
 insert into Wishlist_Item (WishlistID, ItemID) values ('39', '14');
 insert into Wishlist_Item (WishlistID, ItemID) values ('40', '43');
 
-
-
-
-
+/* Insert ShoppingCart_Item */
+insert into ShoppingCart_Item (CartID, ItemID) values ('1', '13');
+insert into ShoppingCart_Item (CartID, ItemID) values ('2', '21');
+insert into ShoppingCart_Item (CartID, ItemID) values ('3', '16');
+insert into ShoppingCart_Item (CartID, ItemID) values ('4', '46');
+insert into ShoppingCart_Item (CartID, ItemID) values ('5', '26');
+insert into ShoppingCart_Item (CartID, ItemID) values ('6', '7');
+insert into ShoppingCart_Item (CartID, ItemID) values ('7', '60');
+insert into ShoppingCart_Item (CartID, ItemID) values ('8', '57');
+insert into ShoppingCart_Item (CartID, ItemID) values ('9', '42');
+insert into ShoppingCart_Item (CartID, ItemID) values ('10', '54');
+insert into ShoppingCart_Item (CartID, ItemID) values ('11', '25');
+insert into ShoppingCart_Item (CartID, ItemID) values ('12', '29');
+insert into ShoppingCart_Item (CartID, ItemID) values ('13', '1');
+insert into ShoppingCart_Item (CartID, ItemID) values ('14', '41');
+insert into ShoppingCart_Item (CartID, ItemID) values ('15', '52');
+insert into ShoppingCart_Item (CartID, ItemID) values ('16', '55');
+insert into ShoppingCart_Item (CartID, ItemID) values ('17', '45');
+insert into ShoppingCart_Item (CartID, ItemID) values ('18', '10');
+insert into ShoppingCart_Item (CartID, ItemID) values ('19', '59');
+insert into ShoppingCart_Item (CartID, ItemID) values ('20', '3');
+insert into ShoppingCart_Item (CartID, ItemID) values ('21', '36');
+insert into ShoppingCart_Item (CartID, ItemID) values ('22', '5');
+insert into ShoppingCart_Item (CartID, ItemID) values ('23', '35');
+insert into ShoppingCart_Item (CartID, ItemID) values ('24', '4');
+insert into ShoppingCart_Item (CartID, ItemID) values ('25', '22');
+insert into ShoppingCart_Item (CartID, ItemID) values ('26', '32');
+insert into ShoppingCart_Item (CartID, ItemID) values ('27', '9');
+insert into ShoppingCart_Item (CartID, ItemID) values ('28', '47');
+insert into ShoppingCart_Item (CartID, ItemID) values ('29', '50');
+insert into ShoppingCart_Item (CartID, ItemID) values ('30', '28');
+insert into ShoppingCart_Item (CartID, ItemID) values ('31', '34');
+insert into ShoppingCart_Item (CartID, ItemID) values ('32', '20');
+insert into ShoppingCart_Item (CartID, ItemID) values ('33', '18');
+insert into ShoppingCart_Item (CartID, ItemID) values ('34', '11');
+insert into ShoppingCart_Item (CartID, ItemID) values ('35', '39');
+insert into ShoppingCart_Item (CartID, ItemID) values ('36', '12');
+insert into ShoppingCart_Item (CartID, ItemID) values ('37', '14');
+insert into ShoppingCart_Item (CartID, ItemID) values ('38', '40');
+insert into ShoppingCart_Item (CartID, ItemID) values ('39', '38');
+insert into ShoppingCart_Item (CartID, ItemID) values ('40', '31');
+insert into ShoppingCart_Item (CartID, ItemID) values ('1', '51');
+insert into ShoppingCart_Item (CartID, ItemID) values ('2', '30');
+insert into ShoppingCart_Item (CartID, ItemID) values ('3', '24');
+insert into ShoppingCart_Item (CartID, ItemID) values ('4', '53');
+insert into ShoppingCart_Item (CartID, ItemID) values ('5', '33');
+insert into ShoppingCart_Item (CartID, ItemID) values ('6', '15');
+insert into ShoppingCart_Item (CartID, ItemID) values ('7', '8');
+insert into ShoppingCart_Item (CartID, ItemID) values ('8', '19');
+insert into ShoppingCart_Item (CartID, ItemID) values ('9', '6');
+insert into ShoppingCart_Item (CartID, ItemID) values ('10', '44');
+insert into ShoppingCart_Item (CartID, ItemID) values ('11', '58');
+insert into ShoppingCart_Item (CartID, ItemID) values ('12', '49');
+insert into ShoppingCart_Item (CartID, ItemID) values ('13', '48');
+insert into ShoppingCart_Item (CartID, ItemID) values ('14', '17');
+insert into ShoppingCart_Item (CartID, ItemID) values ('15', '27');
+insert into ShoppingCart_Item (CartID, ItemID) values ('16', '37');
+insert into ShoppingCart_Item (CartID, ItemID) values ('17', '23');
+insert into ShoppingCart_Item (CartID, ItemID) values ('18', '2');
+insert into ShoppingCart_Item (CartID, ItemID) values ('19', '43');
+insert into ShoppingCart_Item (CartID, ItemID) values ('20', '56');
+insert into ShoppingCart_Item (CartID, ItemID) values ('21', '38');
+insert into ShoppingCart_Item (CartID, ItemID) values ('22', '51');
+insert into ShoppingCart_Item (CartID, ItemID) values ('23', '26');
+insert into ShoppingCart_Item (CartID, ItemID) values ('24', '43');
+insert into ShoppingCart_Item (CartID, ItemID) values ('25', '12');
+insert into ShoppingCart_Item (CartID, ItemID) values ('26', '35');
+insert into ShoppingCart_Item (CartID, ItemID) values ('27', '28');
+insert into ShoppingCart_Item (CartID, ItemID) values ('28', '39');
+insert into ShoppingCart_Item (CartID, ItemID) values ('29', '37');
+insert into ShoppingCart_Item (CartID, ItemID) values ('30', '52');
+insert into ShoppingCart_Item (CartID, ItemID) values ('31', '46');
+insert into ShoppingCart_Item (CartID, ItemID) values ('32', '45');
+insert into ShoppingCart_Item (CartID, ItemID) values ('33', '25');
+insert into ShoppingCart_Item (CartID, ItemID) values ('34', '30');
+insert into ShoppingCart_Item (CartID, ItemID) values ('35', '33');
+insert into ShoppingCart_Item (CartID, ItemID) values ('36', '6');
+insert into ShoppingCart_Item (CartID, ItemID) values ('37', '44');
+insert into ShoppingCart_Item (CartID, ItemID) values ('38', '41');
+insert into ShoppingCart_Item (CartID, ItemID) values ('39', '29');
+insert into ShoppingCart_Item (CartID, ItemID) values ('40', '41');
+insert into ShoppingCart_Item (CartID, ItemID) values ('1', '31');
+insert into ShoppingCart_Item (CartID, ItemID) values ('2', '50');
+insert into ShoppingCart_Item (CartID, ItemID) values ('3', '42');
+insert into ShoppingCart_Item (CartID, ItemID) values ('4', '4');
+insert into ShoppingCart_Item (CartID, ItemID) values ('5', '54');
+insert into ShoppingCart_Item (CartID, ItemID) values ('6', '5');
+insert into ShoppingCart_Item (CartID, ItemID) values ('7', '15');
+insert into ShoppingCart_Item (CartID, ItemID) values ('8', '58');
+insert into ShoppingCart_Item (CartID, ItemID) values ('9', '23');
+insert into ShoppingCart_Item (CartID, ItemID) values ('10', '55');
+insert into ShoppingCart_Item (CartID, ItemID) values ('11', '8');
+insert into ShoppingCart_Item (CartID, ItemID) values ('12', '16');
+insert into ShoppingCart_Item (CartID, ItemID) values ('13', '56');
+insert into ShoppingCart_Item (CartID, ItemID) values ('14', '1');
+insert into ShoppingCart_Item (CartID, ItemID) values ('15', '9');
+insert into ShoppingCart_Item (CartID, ItemID) values ('16', '47');
+insert into ShoppingCart_Item (CartID, ItemID) values ('17', '17');
+insert into ShoppingCart_Item (CartID, ItemID) values ('18', '60');
+insert into ShoppingCart_Item (CartID, ItemID) values ('19', '14');
+insert into ShoppingCart_Item (CartID, ItemID) values ('20', '48');
+insert into ShoppingCart_Item (CartID, ItemID) values ('21', '22');
+insert into ShoppingCart_Item (CartID, ItemID) values ('22', '19');
+insert into ShoppingCart_Item (CartID, ItemID) values ('23', '2');
+insert into ShoppingCart_Item (CartID, ItemID) values ('24', '13');
+insert into ShoppingCart_Item (CartID, ItemID) values ('25', '59');
+insert into ShoppingCart_Item (CartID, ItemID) values ('26', '3');
+insert into ShoppingCart_Item (CartID, ItemID) values ('27', '34');
+insert into ShoppingCart_Item (CartID, ItemID) values ('28', '49');
+insert into ShoppingCart_Item (CartID, ItemID) values ('29', '18');
+insert into ShoppingCart_Item (CartID, ItemID) values ('30', '57');
+insert into ShoppingCart_Item (CartID, ItemID) values ('31', '53');
+insert into ShoppingCart_Item (CartID, ItemID) values ('32', '36');
+insert into ShoppingCart_Item (CartID, ItemID) values ('33', '27');
+insert into ShoppingCart_Item (CartID, ItemID) values ('34', '24');
+insert into ShoppingCart_Item (CartID, ItemID) values ('35', '21');
+insert into ShoppingCart_Item (CartID, ItemID) values ('36', '20');
+insert into ShoppingCart_Item (CartID, ItemID) values ('37', '7');
+insert into ShoppingCart_Item (CartID, ItemID) values ('38', '10');
+insert into ShoppingCart_Item (CartID, ItemID) values ('39', '11');
+insert into ShoppingCart_Item (CartID, ItemID) values ('40', '32');
+insert into ShoppingCart_Item (CartID, ItemID) values ('1', '57');
+insert into ShoppingCart_Item (CartID, ItemID) values ('2', '18');
+insert into ShoppingCart_Item (CartID, ItemID) values ('3', '45');
+insert into ShoppingCart_Item (CartID, ItemID) values ('4', '35');
+insert into ShoppingCart_Item (CartID, ItemID) values ('5', '8');
+insert into ShoppingCart_Item (CartID, ItemID) values ('6', '4');
+insert into ShoppingCart_Item (CartID, ItemID) values ('7', '21');
+insert into ShoppingCart_Item (CartID, ItemID) values ('8', '43');
+insert into ShoppingCart_Item (CartID, ItemID) values ('9', '36');
+insert into ShoppingCart_Item (CartID, ItemID) values ('10', '39');
+insert into ShoppingCart_Item (CartID, ItemID) values ('11', '7');
+insert into ShoppingCart_Item (CartID, ItemID) values ('12', '59');
+insert into ShoppingCart_Item (CartID, ItemID) values ('13', '23');
+insert into ShoppingCart_Item (CartID, ItemID) values ('14', '53');
+insert into ShoppingCart_Item (CartID, ItemID) values ('15', '12');
+insert into ShoppingCart_Item (CartID, ItemID) values ('16', '30');
+insert into ShoppingCart_Item (CartID, ItemID) values ('17', '25');
+insert into ShoppingCart_Item (CartID, ItemID) values ('18', '37');
+insert into ShoppingCart_Item (CartID, ItemID) values ('19', '3');
+insert into ShoppingCart_Item (CartID, ItemID) values ('20', '6');
+insert into ShoppingCart_Item (CartID, ItemID) values ('21', '2');
+insert into ShoppingCart_Item (CartID, ItemID) values ('22', '54');
+insert into ShoppingCart_Item (CartID, ItemID) values ('23', '10');
+insert into ShoppingCart_Item (CartID, ItemID) values ('24', '15');
+insert into ShoppingCart_Item (CartID, ItemID) values ('25', '28');
+insert into ShoppingCart_Item (CartID, ItemID) values ('26', '46');
+insert into ShoppingCart_Item (CartID, ItemID) values ('27', '51');
+insert into ShoppingCart_Item (CartID, ItemID) values ('28', '17');
+insert into ShoppingCart_Item (CartID, ItemID) values ('29', '55');
+insert into ShoppingCart_Item (CartID, ItemID) values ('30', '42');
+insert into ShoppingCart_Item (CartID, ItemID) values ('31', '11');
+insert into ShoppingCart_Item (CartID, ItemID) values ('32', '49');
+insert into ShoppingCart_Item (CartID, ItemID) values ('33', '33');
+insert into ShoppingCart_Item (CartID, ItemID) values ('34', '47');
+insert into ShoppingCart_Item (CartID, ItemID) values ('35', '56');
+insert into ShoppingCart_Item (CartID, ItemID) values ('36', '16');
+insert into ShoppingCart_Item (CartID, ItemID) values ('37', '1');
+insert into ShoppingCart_Item (CartID, ItemID) values ('38', '50');
+insert into ShoppingCart_Item (CartID, ItemID) values ('39', '58');
+insert into ShoppingCart_Item (CartID, ItemID) values ('40', '26');
+insert into ShoppingCart_Item (CartID, ItemID) values ('1', '30');
+insert into ShoppingCart_Item (CartID, ItemID) values ('2', '22');
+insert into ShoppingCart_Item (CartID, ItemID) values ('3', '20');
+insert into ShoppingCart_Item (CartID, ItemID) values ('4', '40');
+insert into ShoppingCart_Item (CartID, ItemID) values ('5', '38');
+insert into ShoppingCart_Item (CartID, ItemID) values ('6', '32');
+insert into ShoppingCart_Item (CartID, ItemID) values ('7', '6');
+insert into ShoppingCart_Item (CartID, ItemID) values ('8', '29');
+insert into ShoppingCart_Item (CartID, ItemID) values ('9', '14');
+insert into ShoppingCart_Item (CartID, ItemID) values ('10', '5');
+insert into ShoppingCart_Item (CartID, ItemID) values ('11', '52');
+insert into ShoppingCart_Item (CartID, ItemID) values ('12', '27');
+insert into ShoppingCart_Item (CartID, ItemID) values ('13', '19');
+insert into ShoppingCart_Item (CartID, ItemID) values ('14', '48');
+insert into ShoppingCart_Item (CartID, ItemID) values ('15', '19');
+insert into ShoppingCart_Item (CartID, ItemID) values ('16', '24');
+insert into ShoppingCart_Item (CartID, ItemID) values ('17', '44');
+insert into ShoppingCart_Item (CartID, ItemID) values ('18', '34');
+insert into ShoppingCart_Item (CartID, ItemID) values ('19', '13');
+insert into ShoppingCart_Item (CartID, ItemID) values ('20', '41');
+insert into ShoppingCart_Item (CartID, ItemID) values ('21', '55');
+insert into ShoppingCart_Item (CartID, ItemID) values ('22', '48');
+insert into ShoppingCart_Item (CartID, ItemID) values ('23', '34');
+insert into ShoppingCart_Item (CartID, ItemID) values ('24', '36');
+insert into ShoppingCart_Item (CartID, ItemID) values ('25', '1');
+insert into ShoppingCart_Item (CartID, ItemID) values ('26', '13');
+insert into ShoppingCart_Item (CartID, ItemID) values ('27', '26');
+insert into ShoppingCart_Item (CartID, ItemID) values ('28', '18');
+insert into ShoppingCart_Item (CartID, ItemID) values ('29', '7');
+insert into ShoppingCart_Item (CartID, ItemID) values ('30', '39');
+insert into ShoppingCart_Item (CartID, ItemID) values ('31', '16');
+insert into ShoppingCart_Item (CartID, ItemID) values ('32', '19');
+insert into ShoppingCart_Item (CartID, ItemID) values ('33', '52');
+insert into ShoppingCart_Item (CartID, ItemID) values ('34', '60');
+insert into ShoppingCart_Item (CartID, ItemID) values ('35', '44');
+insert into ShoppingCart_Item (CartID, ItemID) values ('36', '56');
+insert into ShoppingCart_Item (CartID, ItemID) values ('37', '11');
+insert into ShoppingCart_Item (CartID, ItemID) values ('38', '21');
+insert into ShoppingCart_Item (CartID, ItemID) values ('39', '37');
+insert into ShoppingCart_Item (CartID, ItemID) values ('40', '45');
