@@ -36,13 +36,13 @@ def get_customer(userID):
     return the_response
 
 @customers.route('/wishlist/<userID>', methods=['GET'])
-def get_wishlist(wishlistID):
+def get_wishlist(wishlistID, userID):
     cursor = db.get_db().cursor()
     query= '''SELECT CI.ItemID, CI.Name AS ItemName, CI.Description, CI.Price, CI.Size, CI.BrandName, CI.StyleID
             FROM Wishlist W
             JOIN Wishlist_Item WI ON W.WishlistID = WI.WishlistID
             JOIN Clothing_Item CI ON CI.ItemID = WI.ItemID
-            WHERE W.WishlistID = ''' + str(wishlistID)
+            WHERE W.WishlistID = ''' + str(wishlistID), 'U.UserID = ' + str(userID)
     cursor.execute(query)
     row_headers = [x[0] for x in cursor.description]
     json_data = []
