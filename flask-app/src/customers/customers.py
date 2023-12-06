@@ -95,10 +95,9 @@ def get_all_users():
 @customers.route('/user/Wishlist_Item/<ItemID>', methods=['DELETE'])
 def delete_wishlist_item(userID):
     wanted_data = get_wishlist(userID)
-    wanted_id = 
     # Constructing the delete query
     query = '''DELETE FROM Wishlist_Item
-            WHERE ItemId = ''' + str(ItemId)
+            WHERE ItemId = ''' 
 
     # Executing and committing the delete statement
     cursor = db.get_db().cursor()
@@ -224,7 +223,7 @@ def update_shipping_method():
 
 
 @customers.route('/shoppingItems', methods=['POST'])
-def add_new_shopping_car():
+def add_new_shopping_cart():
     
     # collecting data from the request object 
     the_data = request.json
