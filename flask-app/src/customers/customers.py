@@ -209,23 +209,6 @@ def get_all_shipping_options():
     the_response.mimetype = 'application/json'
     return the_response
 
-
-@customers.route('/editShippingMethod', methods=['PUT'])
-def update_shipping_method():
-    the_data = request.json
-    
-    current_id = the_data.get('ShippingOptionID')
-    new_shipping = the_data.get('new_shipping')
-
-    # update Payment Options
-    the_query = 'UPDATE Shipping_Option SET Duration =' + str(new_shipping) + 'WHERE ShippingOptionID = ' + str(current_id)
-    cursor = db.get_db().cursor()
-    cursor.execute(the_query, (new_shipping, current_id))   
-
-    return "successfully editted paymentoption for#{0}!".format(current_id)
-
-
-
 @customers.route('/wishlistID/<userid>', methods=['GET'])
 def get_wishlist_id(userid):
     cursor = db.get_db().cursor()

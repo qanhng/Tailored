@@ -401,3 +401,17 @@ def delete_cart_item(userID):
     db.get_db().commit()
 
     return 'Item deleted successfully!'
+
+@products.route('/editShippingMethod', methods=['PUT'])
+def update_shipping_method():
+    the_data = request.json
+    
+    current_id = the_data.get('ShippingOptionID')
+    new_shipping = the_data.get('new_shipping')
+
+    # update Payment Options
+    the_query = 'UPDATE Shipping_Option SET Duration =' + str(new_shipping) + 'WHERE ShippingOptionID = ' + str(current_id)
+    cursor = db.get_db().cursor()
+    cursor.execute(the_query, (new_shipping, current_id))   
+
+    return "successfully editted paymentoption for#{0}!".format(current_id)
