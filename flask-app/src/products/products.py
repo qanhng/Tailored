@@ -156,13 +156,12 @@ def get_all_categories():
     return jsonify(json_data)
 
     ### Get all discount for all products 
-@products.route('/Discounts/<Amount>', methods = ['GET'])
-def get_amount():
+@products.route('/Discounts/<itemID>', methods = ['GET'])
+def get_discount(itemID):
     query = '''
-        SELECT Amount 
+        SELECT Amount AS Discount_Price
         FROM Discount JOIN Clothing_Item ON Discount.DiscountID = Clothing_Item.DiscountID
-        WHERE Clothing_Item.DiscountID IS NOT NULL
-    '''
+        WHERE Clothing_Item.ItemID = ''' + str(itemID)
 
     cursor = db.get_db().cursor()
     cursor.execute(query)
@@ -226,27 +225,6 @@ def get_clothingitem(userID):
 
     # for each of the rows, zip the data elements together with
     # the column headers. 
-    for row in theData:
-        json_data.append(dict(zip(column_headers, row)))
-    
-    return jsonify(json_data)
-
-
-@products.route('/ShoppingCart/<CartID>', methods = ['GET'])
-def get_shoppingcart(UserID):
-    query = '''
-        SELECT CI.ItemID, CI.Name, CI.Description, CI.Price, CI.Size
-        FROM Shopping_Cart SC
-        JOIN Clothing_Item CI ON SC.CartID = CI.CartID
-        JOIN User U ON SC.CartID = U.CartID
-        WHERE U.UserID = {0}'''.format(UserID)
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-    json_data = []
-    # fetch all the column headers and then all the data from the cursor
-    column_headers = [x[0] for x in cursor.description]
-    theData = cursor.fetchall()
-    # zip headers and data together into dictionary and then append to json data dict.
     for row in theData:
         json_data.append(dict(zip(column_headers, row)))
     
@@ -327,37 +305,34 @@ def get_categories(itemID):
     the_response.mimetype = 'application/json'
     return the_response
 
-@products.route('/ShoppingCart', methods=['POST'])
-def add_new_shopping():
-    # Collecting data from the request object
-    the_data = request.json
-    current_app.logger.info(the_data)
-
-    # Extracting the variables
-    ItemID = the_data['ItemID']
-    price = the_data['Price']
-
-    # Constructing the parameterized query
-    query = 'INSERT INTO Shopping_Cart (Cost, ItemID) VALUES (%s, %s, %s, %s)'
-    values = (price, ItemID, 1)
-
-    # Executing and committing the insert statement
-    cursor = db.get_db().cursor()
-    cursor.execute(query, values)
-    db.get_db().commit()
-
-    return 'Success!'
 
 @products.route('/ShoppingCart/<userID>', methods=['GET'])
 def get_shopping_cart_info(userID):
-    query = '''SELECT SC.ItemID, SC.CartID, CI.Name, CI.Price, U.UserID
-        FROM Shopping_Cart SC
-        JOIN Clothing_Item CI ON SC.CartID = CI.CartID
-        JOIN User U ON SC.CartID = U.CartID
-        JOIN ShippingInfo_User SIU on U.UserID = SIU.UserID
-        JOIN Shipping_Info SI on SIU.ShippingInfoID = SI.ShippingInfoID
-        JOIN Shipping_Option SO on SC.ShippingOptionID = SO.ShippingOptionID
-        WHERE U.UserID = ''' + str(userID)
+    query = '''SELECT CI.ItemID, CI.Name, CI.BrandName, CI.Size, CI.Price
+    FROM Shopping_Cart SC
+        JOIN ShoppingCart_Item ON SC.CartID = ShoppingCart_Item.CartID
+        JOIN Tailored.Clothing_Item CI on CI.ItemID = ShoppingCart_Item.ItemID
+        JOIN Tailored.User U on SC.UserID = U.UserID
+    WHERE U.UserID =''' + str(userID)
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    the_response.mimetype = 'application/json'
+    return the_response
+
+@products.route('/ShoppingCartPrice/<userID>', methods=['GET'])
+def get_total_price(userID):
+    query = '''SELECT SUM(CI.Price) AS Cart_Total FROM Shopping_Cart SC
+        JOIN ShoppingCart_Item ON SC.CartID = ShoppingCart_Item.CartID
+        JOIN Tailored.Clothing_Item CI on CI.ItemID = ShoppingCart_Item.ItemID
+        JOIN Tailored.User U on SC.UserID = U.UserID
+    WHERE U.UserID =''' + str(userID)
     cursor = db.get_db().cursor()
     cursor.execute(query)
     row_headers = [x[0] for x in cursor.description]
@@ -387,3 +362,42 @@ def get_style(itemID):
     the_response.status_code = 200
     the_response.mimetype = 'application/json'
     return the_response
+
+
+@products.route('/addShoppingItems', methods=['POST'])
+def add_new_shopping_cart_items():
+    # collecting data from the request object 
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    userID = the_data['User']
+    itemID = the_data['Cart_Item']
+
+    # Constructing the query
+    query = 'INSERT INTO ShoppingCart_Item(CartID, ItemID) VALUES (%s, %s)'
+    values = (userID, itemID)
+
+    # executing and committing the insert statement 
+    cursor = db.get_db().cursor()
+    cursor.execute(query, values)
+    db.get_db().commit()
+
+    return 'Success!'
+
+@products.route('/DeleteCartItem/<userID>', methods=['DELETE'])
+def delete_cart_item(userID):
+
+    the_data = request.json
+    current_app.logger.info(the_data)
+    deleted_id = the_data.get('Delete_ID')
+
+    # Constructing the delete query
+    query = '''DELETE FROM ShoppingCart_Item
+            WHERE ItemId = ''' + str(deleted_id) + ''' and CartID = ''' + str(userID)
+
+    # Executing and committing the delete statement
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+
+    return 'Item deleted successfully!'
