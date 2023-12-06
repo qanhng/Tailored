@@ -93,13 +93,12 @@ def get_all_users():
 
 
 @customers.route('/user/Wishlist_Item/<ItemID>', methods=['DELETE'])
-def delete_wishlist_item(wishlistID):
+def delete_wishlist_item(userID):
+    wanted_data = get_wishlist(userID)
+    wanted_id = 
     # Constructing the delete query
-    query = '''SELECT CI.ItemID, CI.Name AS ItemName, CI.Description, CI.Price, CI.Size, CI.BrandName, CI.StyleID
-            FROM Wishlist W
-            JOIN Wishlist_Item WI ON W.WishlistID = WI.WishlistID
-            JOIN Clothing_Item CI ON CI.ItemID = WI.ItemID
-            WHERE W.WishlistID = ''' + str(wishlistID)
+    query = '''DELETE FROM Wishlist_Item
+            WHERE ItemId = ''' + str(ItemId)
 
     # Executing and committing the delete statement
     cursor = db.get_db().cursor()
@@ -107,28 +106,6 @@ def delete_wishlist_item(wishlistID):
     db.get_db().commit()
 
     return 'Item deleted successfully!'
-
-@customers.route('/user/wishlist', methods=['POST'])
-def add_new_wishlist():
-    
-    # collecting data from the request object 
-    the_data = request.json
-    current_app.logger.info(the_data)
-
-    #extracting the variable
-    name = the_data['Name']
-    userID = the_data['UserID']
-
-    # Constructing the query
-    query = 'INSERT INTO Wishlist (Name, UserID) VALUES (%s, %s, %s)'
-    values = (name, userID, 1)
-
-    # executing and committing the insert statement 
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-    db.get_db().commit()
-
-    return 'Success!'
 
 @customers.route('/wishlistItems', methods=['POST'])
 def add_new_wishlist_information():
@@ -244,3 +221,45 @@ def update_shipping_method():
     cursor.execute(the_query, (new_shipping, current_id))   
 
     return "successfully editted paymentoption for#{0}!".format(current_id)
+
+
+@customers.route('/shoppingItems', methods=['POST'])
+def add_new_shopping_car():
+    
+    # collecting data from the request object 
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    userID = the_data['User']
+    itemID = the_data['Cart_Item']
+
+    # Constructing the query
+    query = 'INSERT INTO Wishlist_Item (WishlistID, itemID) VALUES (%s, %s)'
+    values = (userID, itemID)
+
+    # executing and committing the insert statement 
+    cursor = db.get_db().cursor()
+    cursor.execute(query, values)
+    db.get_db().commit()
+
+    return 'Success!'
+
+@customers.route('/wishlistID/<userid>', methods=['GET'])
+def get_wishlist_id(userid):
+    cursor = db.get_db().cursor()
+    query= '''SELECT CI.ItemID
+            FROM Wishlist W
+            JOIN Wishlist_Item WI ON W.WishlistID = WI.WishlistID
+            JOIN Clothing_Item CI ON CI.ItemID = WI.ItemID
+            JOIN User U ON U.UserID = W.WishlistID
+            WHERE U.UserID = ''' + str(userid)
+    cursor.execute(query)
+    row_headers = [x[0] for x in cursor.description]
+    json_data = []
+    theData = cursor.fetchall()
+    for row in theData:
+        json_data.append(dict(zip(row_headers, row)))
+    the_response = make_response(jsonify(json_data))
+    the_response.status_code = 200
+    the_response.mimetype = 'application/json'
+    return the_response
