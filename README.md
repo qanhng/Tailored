@@ -1,19 +1,22 @@
-# MySQL + Flask Boilerplate Project
+# Tailored Project Description
 
-This repo contains a boilerplate setup for spinning up 3 Docker containers: 
-1. A MySQL 8 container for obvious reasons
-1. A Python Flask container to implement a REST API
-1. A Local AppSmith Server
+Created by Susan Huang, Maya Prasad, Hamsa Madhira, and Anh Nguyen for CS3200 - Database Design.
 
-## How to setup and start the containers
-**Important** - you need Docker Desktop installed
+## What is Tailored?
+Currently, whilst shopping for clothing or accessories, people run into the issue of too many choices, many of which are not personalized to their preferences. Our product, Tailored, minimizes this indecisiveness when shopping. Acting as a blend of Google and Pinterest, Tailored will allow users to bring their fashion vision board to reality. The app will take in input information relating to their stylistic choices and demographics such as age, gender, preferred color palettes, textures, purpose of purchase, price range, gender, and urgency. From this user information, the app will select from multiple databases, the appropriate clothing options for the user, and display outfits with links to the specific pieces. This personalized method of shopping allows users to streamline their decisions.
 
-1. Clone this repository.  
-1. Create a file named `db_root_password.txt` in the `secrets/` folder and put inside of it the root password for MySQL. 
-1. Create a file named `db_password.txt` in the `secrets/` folder and put inside of it the password you want to use for the a non-root user named webapp. 
-1. In a terminal or command prompt, navigate to the folder with the `docker-compose.yml` file.  
-1. Build the images with `docker compose build`
-1. Start the containers with `docker compose up`.  To run in detached mode, run `docker compose up -d`. 
+## Getting started
+1. Clone this repository
+2. Create a file named 'db_root_password.txt' in the 'secrets/' folder and enter your root password for MySQL.
+3. Create a file neamed 'db_password.txt' in the 'secrets/' folder and enter the password for a non-root user.
+4. In your terminal, navigate to the 'docker_compose.yml' file.
+5. Build the images in Docker using this command: 'docker compose build'.
+6. Start the containers in detached mode with 'docker compose up -d'. Make sure the containers (web, db, appsmith) are running.
+
+## Video Demo
+
+
+ 
 
 
 
