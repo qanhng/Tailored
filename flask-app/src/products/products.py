@@ -251,8 +251,10 @@ def update_shipping_method():
     new_shipping = the_data.get('new_shipping')
 
     # update Payment Options
-    the_query = 'UPDATE Shipping_Option SET Duration =' + str(new_shipping) + 'WHERE ShippingOptionID = ' + str(current_id)
+    the_query = 'UPDATE Shipping_Option SET Duration = %s WHERE ShippingOptionID = %s' 
     cursor = db.get_db().cursor()
-    cursor.execute(the_query, (new_shipping, current_id))   
+    cursor.execute(the_query, (new_shipping,current_id)) 
+    db.get_db().commit()
 
-    return "successfully editted paymentoption for#{0}!".format(current_id)
+
+    return "successfully editted shipping option for#{0}!".format(current_id)
