@@ -19,8 +19,13 @@ Currently, whilst shopping for clothing or accessories, people run into the issu
 6. Start the containers with `docker compose up`. To run in detached mode, use `docker compose up -d`. There should be three containers: web, db, and appsmith in Docker.
 
 ## Video Demo
+Youtube
+https://www.youtube.com/watch?v=ZWc_p2daGSY
 
+Google Drive
+https://drive.google.com/drive/folders/14MPJqtjr8m360rwZPe-AgV_-GJO1mb_7?usp=sharing
 
+(At 04:38, when we clicked on the `Add to Wishlist` button for Item 3, the "Item Successfully Added" message didn't pop up but the Item was added to the wishlist. This bug has been fixed and the message should pop up for all `Add to Wishlist` button.)
  
 
 
