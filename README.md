@@ -5,6 +5,12 @@ Created by Susan Huang, Maya Prasad, Hamsa Madhira, and Anh Nguyen for CS3200 - 
 ## What is Tailored?
 Currently, whilst shopping for clothing or accessories, people run into the issue of too many choices, many of which are not personalized to their preferences. Our product, Tailored, minimizes this indecisiveness when shopping. Acting as a blend of Google and Pinterest, Tailored will allow users to bring their fashion vision board to reality. The app will take in input information relating to their stylistic choices and demographics such as age, gender, preferred color palettes, textures, purpose of purchase, price range, gender, and urgency. From this user information, the app will select from multiple databases, the appropriate clothing options for the user, and display outfits with links to the specific pieces. This personalized method of shopping allows users to streamline their decisions.
 
+## This repo contains a boilerplate setup for spinning up 3 Docker containers:
+
+A MySQL 8 container
+A Python Flask container to implement a REST API
+A Local AppSmith Server
+
 ## Getting started
 1. Clone this repository
 2. Create a file named `db_root_password.txt` in the `secrets/` folder and enter your root password for MySQL.
